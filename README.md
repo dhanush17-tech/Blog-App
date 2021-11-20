@@ -15,8 +15,9 @@ This add consists off all what you want in a Blogg App. It facilitates users wit
 
 
 ![ScreenShot](/readme_images/flutter_1.jpg)
-![ScreenShot](/readme_images/flutter_2.jpg)
+![ScreenShot](/readme_images/flutter_2.png)
 ![ScreenShot](/readme_images/flutter_3.jpg)
 ![ScreenShot](/readme_images/flutter_4.jpg)
 ![ScreenShot](/readme_images/flutter_5.jpg)
-![ScreenShot](/readme_images/flutter_6.jpg)
+![ScreenShot](/readme_images/flutter_6.png)
+
