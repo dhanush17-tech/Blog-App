@@ -14,7 +14,7 @@ This add consists off all what you want in a Blogg App. It facilitates users wit
 ## ScreenShots
 
 
-<a href="https://raw.githubusercontent.com/dhanush17-tech/Blog-App/main/readme_images/flutter_1.jpg"><img src="https://raw.githubusercontent.com/dhanush17-tech/Blog-App/main/readme_images/flutter_1.jpg" style="width: 300; max-width: 100%; height: auto" title="Click to enlarge picture" />
+<a href="https://raw.githubusercontent.com/dhanush17-tech/Blog-App/main/readme_images/flutter_1.jpg"><img src="https://raw.githubusercontent.com/dhanush17-tech/Blog-App/main/readme_images/flutter_1.jpg" style="width: 300px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
 <a href="https://raw.githubusercontent.com/dhanush17-tech/Blog-App/main/readme_images/flutter_2.png"><img src="https://raw.githubusercontent.com/dhanush17-tech/Blog-App/main/readme_images/flutter_2.png" style="width: 300px; max-width: 100%; height: auto" title="Click to enlarge picture" />
 
