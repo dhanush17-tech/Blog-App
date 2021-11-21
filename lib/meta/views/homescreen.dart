@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 import 'package:auto_animated/auto_animated.dart';
 import 'package:blog_app/meta/views/blog._page.dart';
@@ -5,7 +6,7 @@ import 'package:blog_app/meta/views/blog_add.dart';
 import 'package:blog_app/meta/views/profile.dart';
 import 'package:blog_app/meta/views/user_search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -24,11 +25,35 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   PageController? _controller;
   TabController? _tab;
+
+  final Firestore _db = Firestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  notific() {
+    _fcm.getToken().then((token) {
+      print(token);
+    });
+    _fcm.subscribeToTopic('new_blog');
+    _fcm.configure(onMessage: (Map<String, dynamic> message) async {
+      print("onMessage: $message");
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print(json.encode(message));
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (builder) => BlogPage(message))); // TODO optional
+    }, onResume: (Map<String, dynamic> message) async {
+      print("onResume: $message");
+      // TODO optional
+    });
+  }
+
   @override
   initState() {
     super.initState();
     _tab = TabController(length: 3, vsync: this);
     _controller = PageController(initialPage: 0);
+    notific();
   }
 
   Widget build(BuildContext context) {
@@ -51,7 +76,10 @@ class _HomeScreenState extends State<HomeScreen>
                 Tab(
                     icon: Text(
                   "Sports",
-                  style: TextStyle(fontSize: 13, color: Colors.white),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white,
+                  ),
                 )),
                 Tab(
                     icon: Text(
@@ -589,72 +617,76 @@ class _HomeScreenState extends State<HomeScreen>
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                               Row(
-                                              children: [
-                                                GestureDetector(
-                                                    onTap: () async {
-                                                      Firestore.instance
-                                                          .collection("blogs")
-                                                          .document(
-                                                              data.documentID)
-                                                          .updateData({
-                                                        "likes": FieldValue
-                                                            .increment(1)
-                                                      });
-                                                    },
-                                                    child: Image.asset(
-                                                      "assets/images/heart.png",
-                                                      color: Color(4290118716),
-                                                      scale: 10,
-                                                    )),
-                                                Text(
-                                                  "${data["likes"]}",
-                                                  style: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Color(0xFF333640)
-                                                          .withOpacity(1)),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 0),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Firestore.instance
-                                                      .collection("blogs")
-                                                      .document(data.documentID)
-                                                      .updateData({
-                                                    "wow":
-                                                        FieldValue.increment(1)
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Image.asset(
-                                                      "assets/images/wow.png",
-                                                      width: 20,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Text(
-                                                      "${data["wow"]}",
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Color(
-                                                                  0xFF333640)
-                                                              .withOpacity(1)),
-                                                    ),
-                                                  ],
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () async {
+                                                        Firestore.instance
+                                                            .collection("blogs")
+                                                            .document(
+                                                                data.documentID)
+                                                            .updateData({
+                                                          "likes": FieldValue
+                                                              .increment(1)
+                                                        });
+                                                      },
+                                                      child: Image.asset(
+                                                        "assets/images/heart.png",
+                                                        color:
+                                                            Color(4290118716),
+                                                        scale: 10,
+                                                      )),
+                                                  Text(
+                                                    "${data["likes"]}",
+                                                    style: GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Color(0xFF333640)
+                                                            .withOpacity(1)),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 0),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Firestore.instance
+                                                        .collection("blogs")
+                                                        .document(
+                                                            data.documentID)
+                                                        .updateData({
+                                                      "wow":
+                                                          FieldValue.increment(
+                                                              1)
+                                                    });
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/images/wow.png",
+                                                        width: 20,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        "${data["wow"]}",
+                                                        style: GoogleFonts.poppins(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Color(
+                                                                    0xFF333640)
+                                                                .withOpacity(
+                                                                    1)),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
                                               SizedBox(
                                                 width: 50,
                                               ),
@@ -1062,72 +1094,76 @@ class _HomeScreenState extends State<HomeScreen>
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                                Row(
-                                              children: [
-                                                GestureDetector(
-                                                    onTap: () async {
-                                                      Firestore.instance
-                                                          .collection("blogs")
-                                                          .document(
-                                                              data.documentID)
-                                                          .updateData({
-                                                        "likes": FieldValue
-                                                            .increment(1)
-                                                      });
-                                                    },
-                                                    child: Image.asset(
-                                                      "assets/images/heart.png",
-                                                      color: Color(4290118716),
-                                                      scale: 10,
-                                                    )),
-                                                Text(
-                                                  "${data["likes"]}",
-                                                  style: GoogleFonts.poppins(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Color(0xFF333640)
-                                                          .withOpacity(1)),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 0),
-                                              child: GestureDetector(
-                                                onTap: () {
-                                                  Firestore.instance
-                                                      .collection("blogs")
-                                                      .document(data.documentID)
-                                                      .updateData({
-                                                    "wow":
-                                                        FieldValue.increment(1)
-                                                  });
-                                                },
-                                                child: Row(
-                                                  children: [
-                                                    Image.asset(
-                                                      "assets/images/wow.png",
-                                                      width: 20,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    Text(
-                                                      "${data["wow"]}",
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Color(
-                                                                  0xFF333640)
-                                                              .withOpacity(1)),
-                                                    ),
-                                                  ],
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                      onTap: () async {
+                                                        Firestore.instance
+                                                            .collection("blogs")
+                                                            .document(
+                                                                data.documentID)
+                                                            .updateData({
+                                                          "likes": FieldValue
+                                                              .increment(1)
+                                                        });
+                                                      },
+                                                      child: Image.asset(
+                                                        "assets/images/heart.png",
+                                                        color:
+                                                            Color(4290118716),
+                                                        scale: 10,
+                                                      )),
+                                                  Text(
+                                                    "${data["likes"]}",
+                                                    style: GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Color(0xFF333640)
+                                                            .withOpacity(1)),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 0),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Firestore.instance
+                                                        .collection("blogs")
+                                                        .document(
+                                                            data.documentID)
+                                                        .updateData({
+                                                      "wow":
+                                                          FieldValue.increment(
+                                                              1)
+                                                    });
+                                                  },
+                                                  child: Row(
+                                                    children: [
+                                                      Image.asset(
+                                                        "assets/images/wow.png",
+                                                        width: 20,
+                                                      ),
+                                                      SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                      Text(
+                                                        "${data["wow"]}",
+                                                        style: GoogleFonts.poppins(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Color(
+                                                                    0xFF333640)
+                                                                .withOpacity(
+                                                                    1)),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
                                               SizedBox(
                                                 width: 50,
                                               ),

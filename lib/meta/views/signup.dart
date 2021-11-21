@@ -8,6 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:easy_gradient_text/easy_gradient_text.dart';
 
 import '../../constants.dart';
@@ -30,7 +32,17 @@ class _SignupState extends State<Signup> {
   String get imageurl => _imageUrl;
   late String _imageUrl = "";
   late File _image;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  late String fcm_token;
   @override
+  initState() {
+    super.initState();
+    _fcm.getToken().then((token) {
+      fcm_token = token;
+      print(token);
+    });
+  }
+
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
@@ -326,6 +338,7 @@ class _SignupState extends State<Signup> {
                                   age: _age.text,
                                   profile_pic: imageurl,
                                   searchkey: indexList,
+                                  fcm_token: fcm_token,
                                   posts: []);
                               Authentication().signup(user, context);
                             },

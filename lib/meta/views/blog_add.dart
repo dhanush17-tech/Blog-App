@@ -244,8 +244,10 @@ class _BlogAddState extends State<BlogAdd> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () async {
+
                       BlogUpload().uploadBlog(_title.text, _content.text,
                           _radioValue1!, image, context);
+
 
                       showDialog(
                           context: context,
