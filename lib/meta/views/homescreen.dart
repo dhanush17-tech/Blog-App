@@ -95,7 +95,12 @@ class _HomeScreenState extends State<HomeScreen>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                          Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (c) => UserSearch()));
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(
                           left: 0.0,
@@ -113,38 +118,30 @@ class _HomeScreenState extends State<HomeScreen>
                             alignment: Alignment.center,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (c) => UserSearch()));
-                                },
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    const Hero(
-                                      tag: "mannn",
-                                      child: Icon(Icons.search,
-                                          size: 25, color: Color(0xFF5894FA)),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      child: Material(
-                                          color: Colors.transparent,
-                                          child: Text("Search ",
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 20,
-                                                color: const Color(
-                                                  4278228470,
-                                                ),
-                                              ))),
-                                    ),
-                                  ],
-                                ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Hero(
+                                    tag: "mannn",
+                                    child: Icon(Icons.search,
+                                        size: 25, color: Color(0xFF5894FA)),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                    child: Material(
+                                        color: Colors.transparent,
+                                        child: Text("Search ",
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 20,
+                                              color: const Color(
+                                                4278228470,
+                                              ),
+                                            ))),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
