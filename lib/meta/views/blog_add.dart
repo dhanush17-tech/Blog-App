@@ -32,6 +32,8 @@ class _BlogAddState extends State<BlogAdd> {
     _radioValue1 = _radioValue1;
   }
 
+  final _formkey = GlobalKey<FormState>();
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -39,275 +41,253 @@ class _BlogAddState extends State<BlogAdd> {
           body: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15),
             child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, left: 0),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Upload Blog",
-                        style: GoogleFonts.poppins(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Title of the blog',
-                        style: GoogleFonts.poppins(
-                            color: secondarytextColor, fontSize: 18),
-                      )),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Material(
-                    elevation: 0,
-                    color: Colors.blue.withOpacity(0.8),
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: TextFormField(
-                            style: TextStyle(color: Colors.white),
-                            controller: _title,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              fillColor: Colors.grey.withOpacity(0.25),
-                              filled: true,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.only(top: 14.0),
-                              // prefixIcon: const Icon(
-                              //   Icons.lock_outline,
-                              //   color: Colors.blue,
-                              // ),
-                            ),
-                          )),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Photo of the blog',
-                        style: GoogleFonts.poppins(
-                            color: secondarytextColor, fontSize: 18),
-                      )),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      image = await BlogUpload().pickFile();
-                    },
-                    child: Material(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blue.withOpacity(0.8),
-                      child: image == null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Container(
-                                  width: double.infinity,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.grey.withOpacity(0.3)),
-                                  child: Icon(
-                                    Icons.upload_file,
-                                    color: Colors.white.withOpacity(0.8),
-                                    size: 100,
-                                  )),
-                            )
-                          : Container(
-                              width: double.infinity,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  image: DecorationImage(
-                                      image: FileImage(
-                                        image,
-                                      ),
-                                      fit: BoxFit.cover)),
-                            ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Content',
-                        style: GoogleFonts.poppins(
-                            color: secondarytextColor, fontSize: 18),
-                      )),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue.withOpacity(0.8),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      height: 200,
-                      child: TextField(
-                        controller: _content,
-                        style: TextStyle(color: Colors.white),
-                        maxLines: 10000,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          fillColor: Colors.grey.withOpacity(0.25),
-                          filled: true,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                          contentPadding: EdgeInsets.only(top: 14.0),
-                          // prefixIcon: const Icon(
-                          //   Icons.lock_outline,
-                          //   color: Colors.blue,
-                          // ),
+              child: Form(
+                key: _formkey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, left: 0),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "Upload Blog",
+                          style: GoogleFonts.poppins(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        'Category',
-                        style: GoogleFonts.poppins(
-                            color: secondarytextColor, fontSize: 18),
-                      )),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Theme(
-                            data: ThemeData.dark(),
-                            child: Radio<String>(
-                              hoverColor: Colors.pink,
-                              value: "Cinema",
-                              groupValue: _radioValue1,
-                              onChanged: (val) {
-                                setState(() {
-                                  _radioValue1 = val!;
-                                });
+                    const SizedBox(height: 20),
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                          'Title of the blog',
+                          style: GoogleFonts.poppins(
+                              color: secondarytextColor, fontSize: 18),
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Material(
+                      elevation: 0,
+                      color: Colors.blue.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Enter some password ';
+                                }
+                                return null;
                               },
-                            ),
-                          ),
-                          Text('Cinema',
-                              style: GoogleFonts.poppins(
-                                  color: Color(4278228470),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600)),
-                        ],
+                              style: TextStyle(color: Colors.white),
+                              controller: _title,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                fillColor: Colors.grey.withOpacity(0.25),
+                                filled: true,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.only(top: 14.0),
+                                // prefixIcon: const Icon(
+                                //   Icons.lock_outline,
+                                //   color: Colors.blue,
+                                // ),
+                              ),
+                            )),
                       ),
-                      Row(
+                    ),
+                    const SizedBox(height: 20),
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                          'Photo of the blog',
+                          style: GoogleFonts.poppins(
+                              color: secondarytextColor, fontSize: 18),
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        image = await BlogUpload().pickFile();
+                      },
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.blue.withOpacity(0.8),
+                        child: image == null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Container(
+                                    width: double.infinity,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.grey.withOpacity(0.3)),
+                                    child: Icon(
+                                      Icons.upload_file,
+                                      color: Colors.white.withOpacity(0.8),
+                                      size: 100,
+                                    )),
+                              )
+                            : Container(
+                                width: double.infinity,
+                                height: 150,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    image: DecorationImage(
+                                        image: FileImage(
+                                          image,
+                                        ),
+                                        fit: BoxFit.cover)),
+                              ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                          'Content',
+                          style: GoogleFonts.poppins(
+                              color: secondarytextColor, fontSize: 18),
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.blue.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        height: 200,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter some password ';
+                            }
+                            return null;
+                          },
+                          controller: _content,
+                          style: TextStyle(color: Colors.white),
+                          maxLines: 10000,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            fillColor: Colors.grey.withOpacity(0.25),
+                            filled: true,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.only(top: 14.0),
+                            // prefixIcon: const Icon(
+                            //   Icons.lock_outline,
+                            //   color: Colors.blue,
+                            // ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                          'Category',
+                          style: GoogleFonts.poppins(
+                              color: secondarytextColor, fontSize: 18),
+                        )),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Column(
+                      children: [
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Theme(
                               data: ThemeData.dark(),
                               child: Radio<String>(
-                                value: "Sports",
+                                hoverColor: Colors.pink,
+                                value: "Cinema",
                                 groupValue: _radioValue1,
                                 onChanged: (val) {
                                   setState(() {
                                     _radioValue1 = val!;
-                                    print(_radioValue1);
                                   });
                                 },
                               ),
                             ),
-                            Text('Sports',
+                            Text('Cinema',
                                 style: GoogleFonts.poppins(
                                     color: Color(4278228470),
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600)),
-                          ]),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () async {
-
-                      BlogUpload().uploadBlog(_title.text, _content.text,
-                          _radioValue1!, image, context);
-
-
-                      showDialog(
-                          context: context,
-                          builder: (sf) {
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 0, left: 0),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: Dialog(
-                                  insetAnimationCurve: Curves.easeIn,
-                                  insetAnimationDuration: Duration(seconds: 2),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(20),
-                                    ),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    decoration: const BoxDecoration(
-                                      gradient: LinearGradient(
-                                          colors: [
-                                            Color(4278857608),
-                                            Color(4278256230)
-                                          ],
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft),
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                    child: Container(
-                                        height: 150,
-                                        child: Lottie.asset(
-                                          "assets/images/done.json",
-                                          repeat: false,
-                                        )),
-                                  ),
+                          ],
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Theme(
+                                data: ThemeData.dark(),
+                                child: Radio<String>(
+                                  value: "Sports",
+                                  groupValue: _radioValue1,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      _radioValue1 = val!;
+                                      print(_radioValue1);
+                                    });
+                                  },
                                 ),
                               ),
-                            );
-                          });
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [Colors.blue, Colors.lightBlueAccent])),
-                      child: Text('Add Blog',
-                          style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 20,
-                              color: Colors.white)),
+                              Text('Sports',
+                                  style: GoogleFonts.poppins(
+                                      color: Color(4278228470),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600)),
+                            ]),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () async {
+                        // Validate returns true if the form is valid, or false otherwise.
+                        if (_formkey.currentState!.validate()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Uploading Blog...')),
+                          );
+                          BlogUpload().uploadBlog(_title.text, _content.text,
+                              _radioValue1!, image, context);
+                        }
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Colors.blue, Colors.lightBlueAccent])),
+                        child: Text('Add Blog',
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                                color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           )),

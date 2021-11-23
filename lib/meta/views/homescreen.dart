@@ -38,10 +38,10 @@ class _HomeScreenState extends State<HomeScreen>
       print("onMessage: $message");
     }, onLaunch: (Map<String, dynamic> message) async {
       print(json.encode(message));
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (builder) => BlogPage(message))); // TODO optional
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (builder) => BlogPage(json.encode(message)))); // TODO optional
     }, onResume: (Map<String, dynamic> message) async {
       print("onResume: $message");
       // TODO optional
@@ -55,6 +55,8 @@ class _HomeScreenState extends State<HomeScreen>
     _controller = PageController(initialPage: 0);
     notific();
   }
+
+  
 
   Widget build(BuildContext context) {
     return Scaffold(
